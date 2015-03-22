@@ -1,4 +1,4 @@
-import com.aaomidi.cowclash.util.ColorEnum;
+import org.aaomidi.ColorEnum;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
