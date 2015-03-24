@@ -87,16 +87,20 @@ public class MySQL {
      * @return ResultSet returned by SQL. This value CAN be null.
      * @throws java.sql.SQLException
      */
-    public ResultSet executeQuery(String query, Object... parameters) throws SQLException {
+    public ResultSet executeQuery(String query, Object... parameters) {
         int parameterCount = (parameters == null) ? 0 : parameters.length;
 
         if (StringUtils.countMatches(query, "?") != parameterCount) {
-            // TODO: Throw exception.
+            logger.log(Level.SEVERE, "The number of ? did not match the number of parameters.");
             return null;
         }
-        PreparedStatement statement = prepareStatement(query, parameterCount, parameters);
-
-        return statement.executeQuery();
+        try {
+            PreparedStatement statement = prepareStatement(query, parameterCount, parameters);
+            return statement.executeQuery();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, String.format("There was a problem executing the following query: %s \n Stack Trace: %s", query, ex));
+        }
+        return null;
     }
 
     /**
@@ -107,16 +111,20 @@ public class MySQL {
      * @return Result integer returned by SQL. If this value is -1 there was a mistake in the number of `?` and parameters.
      * @throws java.sql.SQLException
      */
-    public int executeUpdate(String query, Object... parameters) throws SQLException {
+    public int executeUpdate(String query, Object... parameters) {
         int parameterCount = (parameters == null) ? 0 : parameters.length;
 
         if (StringUtils.countMatches(query, "?") != parameterCount) {
-            // TODO: Throw exception.
+            logger.log(Level.SEVERE, "The number of ? did not match the number of parameters.");
             return -1;
         }
-        PreparedStatement statement = prepareStatement(query, parameterCount, parameters);
-
-        return statement.executeUpdate();
+        try {
+            PreparedStatement statement = prepareStatement(query, parameterCount, parameters);
+            return statement.executeUpdate();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, String.format("There was a problem executing the following query: %s \n Stack Trace: %s", query, ex));
+        }
+        return -1;
     }
 
     /**
